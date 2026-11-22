@@ -1,0 +1,19 @@
+{
+  "name": "rishinbussa.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal website of Rishin Bussa.",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.js",
+    "test": "playwright test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "images": "node scripts/images.js"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.1",
+    "prettier": "^3.9.10"
+  }
+}
