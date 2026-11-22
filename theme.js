@@ -1,6 +1,6 @@
-// Picks the theme before the page is drawn, so it never flashes the wrong one. The site is
-// dark until someone picks light with the toggle. That choice is kept in this browser only
-// (localStorage) and is never sent anywhere.
+// Picks the theme before the page is drawn, so it never flashes the wrong one. A first visit
+// follows the device setting; after that, the toggle wins. That choice is kept in this
+// browser only (localStorage) and is never sent anywhere.
 //
 // The pages load this file before the stylesheet, so it runs before anything is drawn.
 
@@ -22,7 +22,11 @@ function applyTheme(theme) {
   document.querySelector('meta[name="color-scheme"]')?.setAttribute('content', theme);
 }
 
-applyTheme(savedTheme() ?? 'dark');
+function deviceTheme() {
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+}
+
+applyTheme(savedTheme() ?? deviceTheme());
 
 document.addEventListener('click', (event) => {
   if (!event.target.closest('[data-theme-toggle]')) return;

@@ -15,12 +15,14 @@ async function expectTheme(page, theme) {
   await expect(page.locator('meta[name="color-scheme"]')).toHaveAttribute('content', theme);
 }
 
+const TOGGLE_LABELS = { dark: 'Switch to light theme', light: 'Switch to dark theme' };
+
 for (const colorScheme of ['dark', 'light']) {
-  test(`is dark by default when the device is set to ${colorScheme}`, async ({ page }) => {
+  test(`follows the device on a first visit when it is set to ${colorScheme}`, async ({ page }) => {
     await page.emulateMedia({ colorScheme });
     await page.goto('/');
-    await expectTheme(page, 'dark');
-    await expect(page.getByRole('button', { name: 'Switch to light theme' })).toBeVisible();
+    await expectTheme(page, colorScheme);
+    await expect(page.getByRole('button', { name: TOGGLE_LABELS[colorScheme] })).toBeVisible();
   });
 }
 

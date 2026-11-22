@@ -14,6 +14,8 @@ export default defineConfig({
   reporter: process.env.CI ? [['list'], ['github']] : 'list',
   use: {
     baseURL: `http://localhost:${PORT}`,
+    // Most tests start from the dark theme; tests/theme.spec.js covers the light setting.
+    colorScheme: 'dark',
     trace: 'off',
     launchOptions: { executablePath: process.env.CHROMIUM_PATH || undefined },
   },
