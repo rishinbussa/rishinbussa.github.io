@@ -1,0 +1,700 @@
+/*
+  Styles for rishinbussa.github.io, in the same family as knowfo.
+  Mobile first: the base rules are for phones and the media queries add room on larger
+  screens. Dark is the default theme; the light theme swaps the same variables. Motion only
+  runs for people who have not asked their device to reduce it.
+*/
+
+/*
+  The fonts are served from this site, so no font service sees visitors. Instrument Serif and
+  Geist are under the SIL Open Font License (see fonts/). The extra Geist file only loads for
+  letters beyond basic Latin.
+*/
+
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/instrument-serif-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/instrument-serif-latin-400-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Geist;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/geist-latin-wght-normal.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: Geist;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/geist-latin-ext-wght-normal.woff2') format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+:root {
+  color-scheme: dark;
+
+  --ink: #0e0d0b;
+  --espresso: #1a1814;
+  --bone: #ede6da;
+  --sand: #d9cdb8;
+  --taupe: #8a8170;
+
+  --bg: var(--ink);
+  --text: var(--bone);
+  --muted: #bdb4a1;
+  --line: rgb(237 230 218 / 0.12);
+  --line-strong: rgb(237 230 218 / 0.24);
+  --hover: rgb(26 24 20 / 0.72);
+  --dot: var(--sand);
+  --glow-1: rgb(217 205 184 / 0.17);
+  --glow-2: rgb(138 129 112 / 0.15);
+  --grain: 0.07;
+
+  --font-serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --font-sans:
+    Geist, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --column: 880px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: var(--bone);
+  --text: var(--ink);
+  --muted: #5e5649;
+  --line: rgb(14 13 11 / 0.1);
+  --line-strong: rgb(14 13 11 / 0.22);
+  --hover: rgb(255 252 246 / 0.55);
+  --dot: var(--taupe);
+  --glow-1: rgb(255 251 244 / 0.95);
+  --glow-2: rgb(217 205 184 / 0.75);
+  --grain: 0.1;
+}
+
+/* Base */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  /* viewport-fit=cover lets the page reach the screen edges, so on a phone held sideways
+     this keeps the content clear of the notch. */
+  padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A faint film grain over the whole page. It never blocks taps or clicks. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: url('/grain.svg');
+  opacity: var(--grain);
+  pointer-events: none;
+}
+
+::selection {
+  background: var(--sand);
+  color: var(--ink);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Warm light behind the content, like a lamp seen through frosted glass. */
+
+.glow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glow::before,
+.glow::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+.glow::before {
+  top: -24vmax;
+  left: -18vmax;
+  width: 100vmax;
+  height: 76vmax;
+  background: radial-gradient(closest-side, var(--glow-1), transparent);
+}
+
+.glow::after {
+  right: -30vmax;
+  bottom: -34vmax;
+  width: 84vmax;
+  height: 72vmax;
+  background: radial-gradient(closest-side, var(--glow-2), transparent);
+}
+
+/* Layout: one centered column with a 20px gutter on phones. */
+
+.top,
+.page,
+.footer {
+  width: min(100% - 40px, var(--column));
+  margin-inline: auto;
+}
+
+.page {
+  flex: 1;
+}
+
+.top {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: calc(16px + env(safe-area-inset-top));
+}
+
+/* Theme toggle. theme.js sets data-theme, so without it the button stays hidden. */
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+.theme-toggle svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+:root:not([data-theme]) .theme-toggle,
+:root[data-theme='light'] .theme-toggle__to-light,
+:root:not([data-theme='light']) .theme-toggle__to-dark {
+  display: none;
+}
+
+/* Intro */
+
+.hero {
+  padding-top: clamp(40px, 11vh, 112px);
+}
+
+.name {
+  font-family: var(--font-serif);
+  font-size: clamp(3.5rem, 14vw + 0.5rem, 8rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+}
+
+.intro {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 1.0625rem;
+  text-wrap: balance;
+}
+
+/* Each sentence wraps as a unit, so a line never ends on a lone word of the next one. */
+.intro span {
+  display: inline-block;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 28px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration-line: underline;
+  text-decoration-color: var(--line-strong);
+}
+
+.links a:hover {
+  text-decoration-color: currentColor;
+}
+
+.links svg {
+  width: 14px;
+  height: 14px;
+  color: var(--muted);
+}
+
+/* Selected work */
+
+.work {
+  padding-top: clamp(64px, 12vh, 128px);
+}
+
+.work__title {
+  font-family: var(--font-serif);
+  font-size: 1.875rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.projects {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each row reaches 14px past the column on both sides, so its hover color has room around
+   the text, while the hairlines between rows stay in line with the column. */
+.project {
+  position: relative;
+  display: grid;
+  grid-template-areas:
+    'title aside'
+    'text text'
+    'tags tags';
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 16px;
+  margin-inline: -14px;
+  padding: 22px 14px 24px;
+  border-radius: 18px;
+}
+
+.project::before,
+.project:last-child::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 14px;
+  left: 14px;
+  height: 1px;
+  background: var(--line);
+}
+
+.project:last-child::after {
+  top: auto;
+  bottom: 0;
+}
+
+.project__title {
+  grid-area: title;
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.project__link {
+  text-decoration: none;
+}
+
+/* The whole row is the link: the ::after of the title link covers it. */
+.project__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+}
+
+.project__arrow {
+  grid-area: aside;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+}
+
+.project__status {
+  grid-area: aside;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 11px 3px 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.project__status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dot);
+}
+
+.project__text {
+  grid-area: text;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.tags {
+  grid-area: tags;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: 2px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* Keyboard focus rings the whole row. Browsers without :has() keep the link's own ring. */
+@supports selector(:has(*)) {
+  .project__link:focus-visible {
+    outline: none;
+  }
+
+  .project:has(.project__link:focus-visible) {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project:not(.project--soon):hover {
+    background: var(--hover);
+  }
+
+  /* The hairlines next to the row under the pointer step aside. */
+  .project:not(.project--soon):hover::before,
+  .project:not(.project--soon):hover::after,
+  .project:not(.project--soon):hover + .project::before {
+    opacity: 0;
+  }
+
+  .project:hover .project__arrow {
+    color: var(--text);
+  }
+
+  .project:hover .tags li {
+    border-color: var(--line-strong);
+  }
+}
+
+/* Footer */
+
+.footer {
+  padding: 56px 0 calc(32px + env(safe-area-inset-bottom));
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+/* Not found page */
+
+.lost {
+  padding-top: clamp(40px, 16vh, 176px);
+}
+
+.lost__line {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 1.0625rem;
+}
+
+.lost__home {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 14px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration-color: var(--line-strong);
+}
+
+.lost__home:hover {
+  text-decoration-color: currentColor;
+}
+
+.lost__home svg {
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+}
+
+/* Larger screens: the rows become a small index, with the title in its own column. */
+
+@media (min-width: 760px) {
+  .top {
+    padding-top: calc(28px + env(safe-area-inset-top));
+  }
+
+  .intro {
+    font-size: 1.125rem;
+  }
+
+  .work__title {
+    font-size: 2.125rem;
+  }
+
+  .projects {
+    margin-top: 24px;
+  }
+
+  .project {
+    grid-template-areas:
+      'title text aside'
+      'title tags aside';
+    grid-template-columns: 12rem minmax(0, 1fr) 18px;
+    align-items: start;
+    column-gap: 32px;
+    margin-inline: -20px;
+    padding: 26px 20px 28px;
+  }
+
+  .project::before,
+  .project:last-child::after {
+    right: 20px;
+    left: 20px;
+  }
+
+  .project--soon {
+    grid-template-areas:
+      'title text .'
+      'aside tags .';
+  }
+
+  .project__title {
+    font-size: 1.875rem;
+    line-height: 1;
+  }
+
+  .project__status {
+    justify-self: start;
+    align-self: start;
+    margin-top: 12px;
+  }
+
+  .project__arrow {
+    align-self: start;
+    margin-top: 3px;
+  }
+
+  .project__text {
+    margin-top: 3px;
+    font-size: 1rem;
+  }
+
+  .tags {
+    margin-top: 12px;
+  }
+
+  .footer {
+    padding-top: 72px;
+  }
+}
+
+/* Motion */
+
+@media (prefers-reduced-motion: no-preference) {
+  .glow::before {
+    animation: drift 40s ease-in-out infinite alternate;
+  }
+
+  .glow::after {
+    animation: drift 56s ease-in-out -20s infinite alternate-reverse;
+  }
+
+  /* A gentle staggered rise as the page loads. */
+  .name,
+  .intro,
+  .links,
+  .work__title,
+  .project,
+  .lost > * {
+    animation: rise 900ms var(--ease) backwards;
+  }
+
+  .intro,
+  .lost > :nth-child(2) {
+    animation-delay: 80ms;
+  }
+
+  .links,
+  .lost > :nth-child(3) {
+    animation-delay: 160ms;
+  }
+
+  .work__title {
+    animation-delay: 240ms;
+  }
+
+  .project:nth-child(1) {
+    animation-delay: 300ms;
+  }
+
+  .project:nth-child(2) {
+    animation-delay: 360ms;
+  }
+
+  .project:nth-child(3) {
+    animation-delay: 420ms;
+  }
+
+  .project:nth-child(4) {
+    animation-delay: 480ms;
+  }
+
+  .project:nth-child(5) {
+    animation-delay: 540ms;
+  }
+
+  /* The toggle and the footer only fade in. */
+  .top,
+  .footer {
+    animation: fade 900ms var(--ease) 300ms backwards;
+  }
+
+  .footer {
+    animation-delay: 600ms;
+  }
+
+  .project,
+  .project::before,
+  .project::after,
+  .project__arrow,
+  .tags li,
+  .theme-toggle {
+    transition:
+      background-color 300ms var(--ease),
+      border-color 300ms var(--ease),
+      color 300ms var(--ease),
+      opacity 300ms var(--ease),
+      translate 400ms var(--ease);
+  }
+
+  .links a,
+  .lost__home {
+    transition: text-decoration-color 300ms var(--ease);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .project:hover .project__arrow {
+      translate: 2px -2px;
+    }
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes drift {
+  to {
+    transform: translate(6vw, 5vh) scale(1.08);
+  }
+}
